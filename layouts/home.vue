@@ -2,9 +2,16 @@
   <v-app id="inspire">
     <v-app id="inspire">
       <v-navigation-drawer v-model="drawer" app clipped>
-        <v-subheader class="mt-4 grey--text text--darken-1">类目</v-subheader>
+        <v-subheader class="all mt-4 grey--text text--darken-1" @click="to()"
+          >全部类目</v-subheader
+        >
         <v-list dense>
-          <v-list-item v-for="item in category_list" :key="item.name" link>
+          <v-list-item
+            v-for="item in category_list"
+            :key="item.name"
+            link
+            @click="to(item.id, item.name)"
+          >
             <v-list-item-content>
               <v-list-item-title>
                 {{ item.name }}
@@ -14,7 +21,12 @@
         </v-list>
         <v-subheader class="mt-4 grey--text text--darken-1">作者</v-subheader>
         <v-list>
-          <v-list-item v-for="item in author_list" :key="item.userId" link>
+          <v-list-item
+            v-for="item in author_list"
+            :key="item.userId"
+            link
+            @click="toUser(item.userId, item.user_info.name)"
+          >
             <v-list-item-avatar>
               <img
                 :src="
@@ -55,23 +67,6 @@ export default {
   data() {
     return {
       drawer: null,
-      //   文章类目
-      items: [
-        { icon: 'mdi-trending-up', text: 'JavaScript' },
-        { icon: 'mdi-youtube-subscription', text: 'Vue' },
-        { icon: 'mdi-history', text: 'History' },
-        { icon: 'mdi-playlist-play', text: 'Playlists' },
-        { icon: 'mdi-clock', text: 'Watch Later' },
-      ],
-      //   最近发布文章的用户
-      items2: [
-        { picture: 28, text: 'Joseph' },
-        { picture: 38, text: 'Apple' },
-        { picture: 48, text: 'Xbox Ahoy' },
-        { picture: 58, text: 'Nokia' },
-        { picture: 78, text: 'MKBHD' },
-      ],
-      list: [],
       avatar: require('../assets/imgs/avatar.png'),
     }
   },
@@ -82,8 +77,36 @@ export default {
     this.$vuetify.theme.dark = true
   },
   methods: {
-    // 将请求放到vuex中
-    // 这是是页面调用的
+    to(id, name) {
+      if (id) {
+        //   通过params传递
+        this.$router.push({
+          name: 'home-id',
+          params: {
+            id,
+            name,
+          },
+        })
+      } else {
+        this.$router.push(`/home`)
+      }
+    },
+    toUser(id, name) {
+      this.$router.push({
+        name: 'home-id',
+        params: {
+          type: 'user',
+          id,
+          name,
+        },
+      })
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.all {
+  cursor: pointer;
+}
+</style>

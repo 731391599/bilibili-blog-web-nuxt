@@ -22,8 +22,8 @@ export default {
     [SET_AUTHOR_LIST](state, list) {
       state.author_list = list
     },
-    [SET_ARTICLE_LIST](state, list) {
-      state.article_list = list
+    [SET_ARTICLE_LIST](state, data) {
+      state.article_list = data
     },
   },
   actions: {
@@ -32,7 +32,7 @@ export default {
     async nuxtServerInit({ commit }, { $axios }) {
       const category = await $axios.get(`/api/home/category`)
       const author = await $axios.get(`/api/home/user`)
-      const article = await $axios.get(`/api/home/article`)
+      const article = await $axios.post(`/api/home/article`, { pageNum: 1 })
       commit(SET_CATEGORY_LIST, category.data.data)
       commit(SET_AUTHOR_LIST, author.data.data)
       commit(SET_ARTICLE_LIST, article.data.data)
