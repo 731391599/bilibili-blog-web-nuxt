@@ -9,6 +9,7 @@
         v-for="article in list"
         :key="article.id"
         max-width="30%"
+        @click="toArticle(article.id)"
       >
         <v-img
           class="white--text align-end"
@@ -17,13 +18,10 @@
         >
           <v-card-title>{{ article.title }}</v-card-title>
         </v-img>
-        
-        <v-card-text class="text--primary">
-          {{ article.category.name }}
-        </v-card-text>
 
-        <v-card-text class="text--primary author">
-          {{ article.user_info.name }}
+        <v-card-text class="text--primary info">
+          <div>{{ article.category.name }}</div>
+          <div>{{ article.user_info.name }}</div>
         </v-card-text>
       </v-card>
     </div>
@@ -56,6 +54,11 @@ export default {
       }
     },
   },
+  methods: {
+    toArticle(id) {
+      this.$router.push(`/article/${id}`)
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -75,13 +78,13 @@ export default {
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
-    padding-bottom: 20px;
     .card {
-      margin: 20px 0;
+      margin: 10px 0;
       margin-left: 2.5%;
       height: 40%;
-      .author {
-        text-align: right;
+      .info {
+        display: flex;
+        justify-content: space-between;
       }
     }
   }
